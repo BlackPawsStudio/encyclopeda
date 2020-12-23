@@ -42,3 +42,16 @@ textarea {
     margin-top: 5px;
 }
 
+.bttn{
+    margin-top: 8px;
+    margin-bottom: 8px
+}
+
+#textarea{
+    width: 500px;
+    height: 150px;   
+}
+
+#align{
+    text-align: center;
+}
