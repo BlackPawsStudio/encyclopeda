@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import HttpRequest
 from . import util
 import random
 from django.shortcuts import redirect
@@ -27,10 +28,11 @@ def search(request, title):
     return render(request, "encyclopedia/temp.html", context={"path":path})
 
 def editpage(request,title):
+    if request.method == "POST":
+        data = dict(request.POST)
+        textarea_text = data["txtarea"]
+        util.save_entry(title,textarea_text[0])
+        return redirect('page', title=title)
     content=util.get_entry(title)
     data = {'title':title, "content":content}
     return render(request, "encyclopedia/editpage.html", context=data)
-
-def save(request):
-    
-    return HttpResponse.entry

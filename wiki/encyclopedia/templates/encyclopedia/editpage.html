@@ -8,10 +8,13 @@
     <body>
         <div id="align">
             <h1>Editting {{title}}  page</h1>
-            <textarea id = "textarea" class = "content">{{content}}</textarea>
-            <div >
-                <a href="/saving_changes"><button>Spasi i sohrani</button></a>
-            </div>
+            <form method = "POST" action="">
+                {% csrf_token %}
+                <textarea id = "textarea" name = "txtarea">{{content}}</textarea>
+                <div >
+                    <input type = "submit" name = "confirm" value="confirm" /> 
+                </div>
+            </form>
         </div>
     </body>
 </html>      
