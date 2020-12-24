@@ -18,7 +18,7 @@
                     <a href="{% url 'index' %}">Home</a>
                 </div>
                 <div>
-                    Create New Page
+                    <a href="/create"><button class = "bttn">Create New Page</button></a>
                 </div>
                 <div>
                     <a href="/page/{{path}}"><button class = "bttn">Random page</button></a>
@@ -26,7 +26,5 @@
                 <div>
                    <a href="edit"><button class = "bttn">Edit page</button></a>
                 </div>
-                {% block nav %}
-                {% endblock %}
             </div>
             <div class="main col-lg-10 col-md-9">

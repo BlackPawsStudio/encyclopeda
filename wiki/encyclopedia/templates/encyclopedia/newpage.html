@@ -3,7 +3,7 @@
 
 <html lang="en">
     <head>
-        <title>{% block title %}{% endblock %}</title>
+        <title></title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link href="{% static 'encyclopedia/styles.css' %}" rel="stylesheet">
     </head>
@@ -23,15 +23,18 @@
                 <div>
                     <a href="/page/{{path}}"><button class = "bttn">Random page</button></a>
                 </div>
-                <div>
-                   <a href="edit"><button class = "bttn">Edit page</button></a>
-                </div>
             </div>
-            <div class="main col-lg-10 col-md-9">
-<h1>Git</h1>
-
-<p>Git is a version control tool that can be used to keep track of versions of a software project.</p>
-
-<h2>GitHub</h2>
-
-<p>GitHub is an online service for hosting git repositories.</p>
+            <div class="main col-lg-10 col-md-9">     
+                <h1>Create a new page!</h1>
+                <form method = "POST" action="/">
+                    {% csrf_token %}
+                    <p><textarea id = "titlearea" name = "titlearea" placeholder="Enter title of the page"></textarea></p>
+                    <textarea id = "textarea" name = "txtarea" placeholder="Enter text of the page in Markdown"></textarea>
+                    <div >
+                        <input type = "submit" name = "confirm" value="confirm" /> 
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

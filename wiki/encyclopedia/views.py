@@ -36,3 +36,12 @@ def editpage(request,title):
     content=util.get_entry(title)
     data = {'title':title, "content":content}
     return render(request, "encyclopedia/editpage.html", context=data)
+
+def create(request):
+    if request.method == "POST":
+        data = dict(request.POST)
+        titletext = data["titlearea"]
+        textarea_text = data["txtarea"]
+        util.save_entry(titletext[0],textarea_text[0])
+        return redirect('page', title=title)
+    return render(request, "encyclopedia/newpage.html")

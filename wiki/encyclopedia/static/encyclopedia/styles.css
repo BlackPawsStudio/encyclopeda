@@ -52,6 +52,11 @@ textarea {
     height: 150px;   
 }
 
+#titlearea{
+    width: 500px;
+    height: 33px;
+}
+
 #align{
     text-align: center;
 }
