@@ -12,9 +12,35 @@ def index(request):
     entries=util.list_entries()
     path=random.choice(entries)
     data={"entries":entries, "path":path}
+    if request.method == "POST": 
+        if 'submit' in request.POST:
+            data = dict(request.POST)
+            page = data["page"]
+            strin = page[0]
+            print(strin.title())
+            entries = util.list_entries()
+            print(entries)
+            if strin.title() in entries:
+                stri = "/page/"+strin.title()
+                return redirect(stri)
+            else:
+                return redirect('/')
     return render(request, "encyclopedia/layout.html", context=data)
 
 def search(request, title):
+    if request.method == "POST": 
+        if 'submit' in request.POST:
+            data = dict(request.POST)
+            page = data["page"]
+            strin = page[0]
+            print(strin.title())
+            entries = util.list_entries()
+            print(entries)
+            if strin.title() in entries:
+                stri = "/page/"+strin.title()
+                return redirect(stri)
+            else:
+                return redirect('/')
     text = markdown(util.get_entry(title))
     path=random.choice(util.list_entries())
     if not text:
@@ -28,20 +54,51 @@ def search(request, title):
     return render(request, "encyclopedia/temp.html", context={"path":path})
 
 def editpage(request,title):
-    if request.method == "POST":
+    if 'confirm' in request.POST:
         data = dict(request.POST)
         textarea_text = data["txtarea"]
         util.save_entry(title,textarea_text[0])
         return redirect('page', title=title)
+    elif 'submit' in request.POST:
+            data = dict(request.POST)
+            page = data["page"]
+            strin = page[0]
+            print(strin.title())
+            entries = util.list_entries()
+            print(entries)
+            if strin.title() in entries:
+                stri = "/page/"+strin.title()
+                return redirect(stri)
+            else:
+                return redirect('/')
+    rand=random.choice(util.list_entries())
     content=util.get_entry(title)
-    data = {'title':title, "content":content}
+    data = {'title':title, "content":content, "rand":rand}
     return render(request, "encyclopedia/editpage.html", context=data)
 
 def create(request):
-    if request.method == "POST":
-        data = dict(request.POST)
-        titletext = data["titlearea"]
-        textarea_text = data["txtarea"]
-        util.save_entry(titletext[0],textarea_text[0])
-        return redirect('page', title=title)
-    return render(request, "encyclopedia/newpage.html")
+    if request.method == "POST": 
+        if 'confirm' in request.POST:
+            data = dict(request.POST)
+            titletext = data["titlearea"]
+            textarea = data["txtarea"]
+            util.save_entry(titletext[0],textarea[0])
+            return redirect('/')
+        elif 'submit' in request.POST:
+            data = dict(request.POST)
+            page = data["page"]
+            strin = page[0]
+            print(strin.title())
+            entries = util.list_entries()
+            print(entries)
+            if strin.title() in entries:
+                stri = "/page/"+strin.title()
+                return redirect(stri)
+            else:
+                return redirect('/')
+    rand=random.choice(util.list_entries())
+    return render(request, "encyclopedia/newpage.html", context={"rand":rand})
+
+def deletepage(request, title):
+    util.delete_entry(title)
+    return redirect('/')

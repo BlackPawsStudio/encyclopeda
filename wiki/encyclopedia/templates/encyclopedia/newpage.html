@@ -11,22 +11,24 @@
         <div class="row">
             <div class="sidebar col-lg-2 col-md-3">
                 <h2>Wiki</h2>
-                <form>
+                <form method = "POST">
+                    {% csrf_token %}
                     <input class="search" type="text" name="page" placeholder="Search Encyclopedia" autocomplete = "off">
+                    <input type="submit" value="submit" name="submit" class = "subm">
                 </form>
                 <div>
                     <a href="{% url 'index' %}">Home</a>
                 </div>
                 <div>
-                    <a href="/create"><button class = "bttn">Create New Page</button></a>
+                    <a href="/create" tabindex='-1'><button class = "bttn">Create New Page</button></a>
                 </div>
                 <div>
-                    <a href="/page/{{path}}"><button class = "bttn">Random page</button></a>
+                    <a href="/page/{{rand}}" tabindex='-1'><button class = "bttn">Random page</button></a>
                 </div>
             </div>
             <div class="main col-lg-10 col-md-9">     
                 <h1>Create a new page!</h1>
-                <form method = "POST" action="/">
+                <form method = "POST" action="{% url 'create' %}">
                     {% csrf_token %}
                     <p><textarea id = "titlearea" name = "titlearea" placeholder="Enter title of the page"></textarea></p>
                     <textarea id = "textarea" name = "txtarea" placeholder="Enter text of the page in Markdown"></textarea>

@@ -26,7 +26,7 @@ textarea {
 }
 
 .search {
-    width: 100%;
+    width: 70%;
     font-size: 15px;
     line-height: 15px;
 }
@@ -59,4 +59,8 @@ textarea {
 
 #align{
     text-align: center;
+}
+
+.subm{
+    margin-top: 8px;
 }

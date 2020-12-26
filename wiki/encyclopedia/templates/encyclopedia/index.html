@@ -2,7 +2,7 @@
 
     <ul>
         {% for entry in entries %}
-        <li><a href="page/{{entry|lower}}/">{{entry}}</a></li>
+        <li><a href="page/{{entry|title}}/">{{entry}}</a></li>
         {% endfor %}
         
     </ul>
