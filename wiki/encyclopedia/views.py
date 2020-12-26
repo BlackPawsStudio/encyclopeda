@@ -24,7 +24,7 @@ def index(request):
                 stri = "/page/"+strin.title()
                 return redirect(stri)
             else:
-                return redirect('/')
+                return HttpResponse("Nothing found")
     return render(request, "encyclopedia/layout.html", context=data)
 
 def search(request, title):
@@ -40,7 +40,7 @@ def search(request, title):
                 stri = "/page/"+strin.title()
                 return redirect(stri)
             else:
-                return redirect('/')
+                return HttpResponse("Nothing found")
     text = markdown(util.get_entry(title))
     path=random.choice(util.list_entries())
     if not text:
@@ -70,7 +70,7 @@ def editpage(request,title):
                 stri = "/page/"+strin.title()
                 return redirect(stri)
             else:
-                return redirect('/')
+                return HttpResponse("Nothing found")
     rand=random.choice(util.list_entries())
     content=util.get_entry(title)
     data = {'title':title, "content":content, "rand":rand}
@@ -78,24 +78,29 @@ def editpage(request,title):
 
 def create(request):
     if request.method == "POST": 
+        entries = util.list_entries()
         if 'confirm' in request.POST:
             data = dict(request.POST)
             titletext = data["titlearea"]
-            textarea = data["txtarea"]
-            util.save_entry(titletext[0],textarea[0])
-            return redirect('/')
+
+            if titletext[0] == "":
+                return HttpResponse("Empty entry title")
+            elif titletext[0] in entries:
+                return HttpResponse("Page already exists")
+            else:
+                textarea = data["txtarea"]
+                util.save_entry(titletext[0],textarea[0])
+                stri = "/page/"+titletext[0]
+                return redirect(stri)
         elif 'submit' in request.POST:
             data = dict(request.POST)
             page = data["page"]
             strin = page[0]
-            print(strin.title())
-            entries = util.list_entries()
-            print(entries)
             if strin.title() in entries:
                 stri = "/page/"+strin.title()
                 return redirect(stri)
             else:
-                return redirect('/')
+                return HttpResponse("Nothing found")
     rand=random.choice(util.list_entries())
     return render(request, "encyclopedia/newpage.html", context={"rand":rand})
 
