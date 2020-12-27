@@ -13,34 +13,50 @@ def index(request):
     path=random.choice(entries)
     data={"entries":entries, "path":path}
     if request.method == "POST": 
-        if 'submit' in request.POST:
+         if 'submit' in request.POST:
             data = dict(request.POST)
             page = data["page"]
-            strin = page[0]
-            print(strin.title())
-            entries = util.list_entries()
-            print(entries)
-            if strin.title() in entries:
-                stri = "/page/"+strin.title()
-                return redirect(stri)
-            else:
-                return HttpResponse("Nothing found")
-    return render(request, "encyclopedia/layout.html", context=data)
+            strin = page[0] #string from searchbar
+            entries = util.list_entries() #list of all intries
+            i = 0
+            li=[]
+            check = False
+            while i < len(entries):
+                if strin.title() == entries[i]:
+                    stri = "/page/"+strin.title()
+                    return redirect(stri)
+                elif strin.title() in entries[i]:
+                    li.append(entries[i])
+                    check = True
+                elif strin.title() not in entries[i] and bool(check):
+                    data = {"list":li, "search":strin} 
+                    return render(request, "encyclopedia/searchresults.html", context = data)
+                i = i + 1
+            return HttpResponse("Nothing found")
+    return render(request, "encyclopedia/index.html", context=data)
 
 def search(request, title):
     if request.method == "POST": 
         if 'submit' in request.POST:
             data = dict(request.POST)
             page = data["page"]
-            strin = page[0]
-            print(strin.title())
-            entries = util.list_entries()
-            print(entries)
-            if strin.title() in entries:
-                stri = "/page/"+strin.title()
-                return redirect(stri)
-            else:
-                return HttpResponse("Nothing found")
+            strin = page[0] #string from searchbar
+            entries = util.list_entries() #list of all intries
+            i = 0
+            li=[]
+            check = False
+            while i < len(entries):
+                if strin.title() == entries[i]:
+                    stri = "/page/"+strin.title()
+                    return redirect(stri)
+                elif strin.title() in entries[i]:
+                    li.append(entries[i])
+                    check = True
+                elif strin.title() not in entries[i] and bool(check):
+                    data = {"list":li, "search":strin} 
+                    return render(request, "encyclopedia/searchresults.html", context = data)
+                i = i + 1
+            return HttpResponse("Nothing found")
     text = markdown(util.get_entry(title))
     path=random.choice(util.list_entries())
     if not text:
@@ -51,7 +67,7 @@ def search(request, title):
                 b_text=b.read()
             text=b_text+'\n'+text
             fw.write(text)
-    return render(request, "encyclopedia/temp.html", context={"path":path})
+    return render(request, "encyclopedia/temp.html", context={"path":path, "title":title})
 
 def editpage(request,title):
     if 'confirm' in request.POST:
@@ -62,15 +78,23 @@ def editpage(request,title):
     elif 'submit' in request.POST:
             data = dict(request.POST)
             page = data["page"]
-            strin = page[0]
-            print(strin.title())
-            entries = util.list_entries()
-            print(entries)
-            if strin.title() in entries:
-                stri = "/page/"+strin.title()
-                return redirect(stri)
-            else:
-                return HttpResponse("Nothing found")
+            strin = page[0] #string from searchbar
+            entries = util.list_entries() #list of all intries
+            i = 0
+            li=[]
+            check = False
+            while i < len(entries):
+                if strin.title() == entries[i]:
+                    stri = "/page/"+strin.title()
+                    return redirect(stri)
+                elif strin.title() in entries[i]:
+                    li.append(entries[i])
+                    check = True
+                elif strin.title() not in entries[i] and bool(check):
+                    data = {"list":li, "search":strin} 
+                    return render(request, "encyclopedia/searchresults.html", context = data)
+                i = i + 1
+            return HttpResponse("Nothing found")
     rand=random.choice(util.list_entries())
     content=util.get_entry(title)
     data = {'title':title, "content":content, "rand":rand}
@@ -82,25 +106,36 @@ def create(request):
         if 'confirm' in request.POST:
             data = dict(request.POST)
             titletext = data["titlearea"]
-
             if titletext[0] == "":
                 return HttpResponse("Empty entry title")
             elif titletext[0] in entries:
                 return HttpResponse("Page already exists")
             else:
                 textarea = data["txtarea"]
-                util.save_entry(titletext[0],textarea[0])
+                pagetitle = titletext[0]
+                util.save_entry(pagetitle.title(),textarea[0])
                 stri = "/page/"+titletext[0]
                 return redirect(stri)
         elif 'submit' in request.POST:
             data = dict(request.POST)
             page = data["page"]
-            strin = page[0]
-            if strin.title() in entries:
-                stri = "/page/"+strin.title()
-                return redirect(stri)
-            else:
-                return HttpResponse("Nothing found")
+            strin = page[0] #string from searchbar
+            entries = util.list_entries() #list of all intries
+            i = 0
+            li=[]
+            check = False
+            while i < len(entries):
+                if strin.title() == entries[i]:
+                    stri = "/page/"+strin.title()
+                    return redirect(stri)
+                elif strin.title() in entries[i]:
+                    li.append(entries[i])
+                    check = True
+                elif strin.title() not in entries[i] and bool(check):
+                    data = {"list":li, "search":strin} 
+                    return render(request, "encyclopedia/searchresults.html", context = data)
+                i = i + 1
+            return HttpResponse("Nothing found")
     rand=random.choice(util.list_entries())
     return render(request, "encyclopedia/newpage.html", context={"rand":rand})
 

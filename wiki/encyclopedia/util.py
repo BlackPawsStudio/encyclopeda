@@ -38,3 +38,23 @@ def get_entry(title):
         return f.read().decode("utf-8")
     except FileNotFoundError:
         return None
+
+# def pagesearch(request):
+    data = dict(request.POST)
+    page = data["page"]
+    strin = page[0] #string from searchbar
+    entries = list_entries() #list of all intries
+    i = 0
+    li=[]
+    check = False
+    while i < len(entries):
+        if strin.title() == entries[i]:
+            stri = "/page/"+strin.title()
+            return redirect(stri)
+        elif strin.title() in entries[i]:
+            li.append(entries[i])
+            check = True
+        elif strin.title() not in entries[i] and bool(check):
+            data = {"list":li, "search":strin} 
+            return (data)
+        i = i + 1
