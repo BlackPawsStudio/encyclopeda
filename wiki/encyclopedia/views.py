@@ -12,7 +12,7 @@ def index(request):
     rand=random.choice(util.list_entries())
     entries=util.list_entries()
     path=random.choice(entries)
-    data={"entries":entries, "path":path}
+    data={"entries":entries, "rand":rand}
     if request.method == "POST": 
          if 'submit' in request.POST:
             a = util.pagesearch(request)
