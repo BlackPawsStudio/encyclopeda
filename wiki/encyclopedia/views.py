@@ -9,54 +9,34 @@ from markdown2 import markdown
 
 
 def index(request):
+    rand=random.choice(util.list_entries())
     entries=util.list_entries()
     path=random.choice(entries)
     data={"entries":entries, "path":path}
     if request.method == "POST": 
          if 'submit' in request.POST:
-            data = dict(request.POST)
-            page = data["page"]
-            strin = page[0] #string from searchbar
-            entries = util.list_entries() #list of all intries
-            i = 0
-            li=[]
-            check = False
-            while i < len(entries):
-                if strin.title() == entries[i]:
-                    stri = "/page/"+strin.title()
-                    return redirect(stri)
-                elif strin.title() in entries[i]:
-                    li.append(entries[i])
-                    check = True
-                elif strin.title() not in entries[i] and bool(check):
-                    data = {"list":li, "search":strin} 
-                    return render(request, "encyclopedia/searchresults.html", context = data)
-                i = i + 1
-            return HttpResponse("Nothing found")
+            a = util.pagesearch(request)
+            print(a[0])
+            if a[0] == 0:
+                return redirect(a[1])
+            elif a[0] == 1:
+                return render(request, "encyclopedia/searchresults.html", context = {"a[1]":a[1], "rand":rand})
+            elif a[0] == 2:
+                return HttpResponse("Nothing found")
     return render(request, "encyclopedia/index.html", context=data)
 
 def search(request, title):
+    rand=random.choice(util.list_entries())
     if request.method == "POST": 
         if 'submit' in request.POST:
-            data = dict(request.POST)
-            page = data["page"]
-            strin = page[0] #string from searchbar
-            entries = util.list_entries() #list of all intries
-            i = 0
-            li=[]
-            check = False
-            while i < len(entries):
-                if strin.title() == entries[i]:
-                    stri = "/page/"+strin.title()
-                    return redirect(stri)
-                elif strin.title() in entries[i]:
-                    li.append(entries[i])
-                    check = True
-                elif strin.title() not in entries[i] and bool(check):
-                    data = {"list":li, "search":strin} 
-                    return render(request, "encyclopedia/searchresults.html", context = data)
-                i = i + 1
-            return HttpResponse("Nothing found")
+            a = util.pagesearch(request)
+            print(a[0])
+            if a[0] == 0:
+                return redirect(a[1])
+            elif a[0] == 1:
+                return render(request, "encyclopedia/searchresults.html", context = {"a[1]":a[1], "rand":rand})
+            elif a[0] == 2:
+                return HttpResponse("Nothing found")
     text = markdown(util.get_entry(title))
     path=random.choice(util.list_entries())
     if not text:
@@ -70,37 +50,27 @@ def search(request, title):
     return render(request, "encyclopedia/temp.html", context={"path":path, "title":title})
 
 def editpage(request,title):
+    rand=random.choice(util.list_entries())
     if 'confirm' in request.POST:
         data = dict(request.POST)
         textarea_text = data["txtarea"]
         util.save_entry(title,textarea_text[0])
         return redirect('page', title=title)
     elif 'submit' in request.POST:
-            data = dict(request.POST)
-            page = data["page"]
-            strin = page[0] #string from searchbar
-            entries = util.list_entries() #list of all intries
-            i = 0
-            li=[]
-            check = False
-            while i < len(entries):
-                if strin.title() == entries[i]:
-                    stri = "/page/"+strin.title()
-                    return redirect(stri)
-                elif strin.title() in entries[i]:
-                    li.append(entries[i])
-                    check = True
-                elif strin.title() not in entries[i] and bool(check):
-                    data = {"list":li, "search":strin} 
-                    return render(request, "encyclopedia/searchresults.html", context = data)
-                i = i + 1
-            return HttpResponse("Nothing found")
-    rand=random.choice(util.list_entries())
+            a = util.pagesearch(request)
+            print(a[0])
+            if a[0] == 0:
+                return redirect(a[1])
+            elif a[0] == 1:
+                return render(request, "encyclopedia/searchresults.html", context = {"a[1]":a[1], "rand":rand})
+            elif a[0] == 2:
+                return HttpResponse("Nothing found")
     content=util.get_entry(title)
     data = {'title':title, "content":content, "rand":rand}
     return render(request, "encyclopedia/editpage.html", context=data)
 
 def create(request):
+    rand=random.choice(util.list_entries())
     if request.method == "POST": 
         entries = util.list_entries()
         if 'confirm' in request.POST:
@@ -117,26 +87,14 @@ def create(request):
                 stri = "/page/"+titletext[0]
                 return redirect(stri)
         elif 'submit' in request.POST:
-            data = dict(request.POST)
-            page = data["page"]
-            strin = page[0] #string from searchbar
-            entries = util.list_entries() #list of all intries
-            i = 0
-            li=[]
-            check = False
-            while i < len(entries):
-                if strin.title() == entries[i]:
-                    stri = "/page/"+strin.title()
-                    return redirect(stri)
-                elif strin.title() in entries[i]:
-                    li.append(entries[i])
-                    check = True
-                elif strin.title() not in entries[i] and bool(check):
-                    data = {"list":li, "search":strin} 
-                    return render(request, "encyclopedia/searchresults.html", context = data)
-                i = i + 1
-            return HttpResponse("Nothing found")
-    rand=random.choice(util.list_entries())
+            a = util.pagesearch(request)
+            print(a[0])
+            if a[0] == 0:
+                return redirect(a[1])
+            elif a[0] == 1:
+                return render(request, "encyclopedia/searchresults.html", context = {"a[1]":a[1], "rand":rand})
+            elif a[0] == 2:
+                return HttpResponse("Nothing found")
     return render(request, "encyclopedia/newpage.html", context={"rand":rand})
 
 def deletepage(request, title):

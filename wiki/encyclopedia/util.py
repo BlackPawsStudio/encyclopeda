@@ -1,5 +1,6 @@
 import re
-
+from django.shortcuts import render
+from django.shortcuts import redirect
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 
@@ -39,7 +40,7 @@ def get_entry(title):
     except FileNotFoundError:
         return None
 
-# def pagesearch(request):
+def pagesearch(request):
     data = dict(request.POST)
     page = data["page"]
     strin = page[0] #string from searchbar
@@ -50,11 +51,13 @@ def get_entry(title):
     while i < len(entries):
         if strin.title() == entries[i]:
             stri = "/page/"+strin.title()
-            return redirect(stri)
+            return 0,stri
         elif strin.title() in entries[i]:
             li.append(entries[i])
             check = True
-        elif strin.title() not in entries[i] and bool(check):
+        elif i == (len(entries)-1) and bool(check):
             data = {"list":li, "search":strin} 
-            return (data)
+            return 1,data
+        elif i == (len(entries)-1) and not bool(sheck):
+            return 2,2
         i = i + 1
