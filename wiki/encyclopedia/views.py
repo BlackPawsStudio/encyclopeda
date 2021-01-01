@@ -16,11 +16,10 @@ def index(request):
     if request.method == "POST": 
          if 'submit' in request.POST:
             a = util.pagesearch(request)
-            print(a[0])
             if a[0] == 0:
                 return redirect(a[1])
             elif a[0] == 1:
-                return render(request, "encyclopedia/searchresults.html", context = {"a[1]":a[1], "rand":rand})
+                return render(request, "encyclopedia/searchresults.html", context = {"search":a[1], "entries":a[2], "rand":rand})
             elif a[0] == 2:
                 return HttpResponse("Nothing found")
     return render(request, "encyclopedia/index.html", context=data)
@@ -34,7 +33,7 @@ def search(request, title):
             if a[0] == 0:
                 return redirect(a[1])
             elif a[0] == 1:
-                return render(request, "encyclopedia/searchresults.html", context = {"a[1]":a[1], "rand":rand})
+                return render(request, "encyclopedia/searchresults.html", context = {"search":a[1], "entries":a[2], "rand":rand})
             elif a[0] == 2:
                 return HttpResponse("Nothing found")
     text = markdown(util.get_entry(title))
@@ -62,7 +61,7 @@ def editpage(request,title):
             if a[0] == 0:
                 return redirect(a[1])
             elif a[0] == 1:
-                return render(request, "encyclopedia/searchresults.html", context = {"a[1]":a[1], "rand":rand})
+                return render(request, "encyclopedia/searchresults.html", context = {"search":a[1], "entries":a[2], "rand":rand})
             elif a[0] == 2:
                 return HttpResponse("Nothing found")
     content=util.get_entry(title)
@@ -92,7 +91,7 @@ def create(request):
             if a[0] == 0:
                 return redirect(a[1])
             elif a[0] == 1:
-                return render(request, "encyclopedia/searchresults.html", context = {"a[1]":a[1], "rand":rand})
+                return render(request, "encyclopedia/searchresults.html", context = {"search":a[1], "entries":a[2], "rand":rand})
             elif a[0] == 2:
                 return HttpResponse("Nothing found")
     return render(request, "encyclopedia/newpage.html", context={"rand":rand})

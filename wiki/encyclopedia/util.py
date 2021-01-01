@@ -56,8 +56,7 @@ def pagesearch(request):
             li.append(entries[i])
             check = True
         elif i == (len(entries)-1) and bool(check):
-            data = {"list":li, "search":strin} 
-            return 1,data
-        elif i == (len(entries)-1) and not bool(sheck):
+            return 1,strin,li
+        elif i == (len(entries)-1) and not bool(check):
             return 2,2
         i = i + 1
